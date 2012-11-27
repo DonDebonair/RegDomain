@@ -35,7 +35,7 @@
 
 class RegisteredDomain {
 
-	$tldTree = array('ac' => array('com' => array(),
+	private $tldTree = array('ac' => array('com' => array(),
 		'edu' => array(),
 		'gov' => array(),
 		'net' => array(),
@@ -5790,9 +5790,9 @@ class RegisteredDomain {
 
 		global $tldTree;
 
-		$signingDomainParts = split('\.', $signingDomain);
+		$signingDomainParts = explode('.', $signingDomain);
 
-		$result = findRegisteredDomain($signingDomainParts, $tldTree);
+		$result = $this->findRegisteredDomain($signingDomainParts, $this->tldTree);
 
 		if ($result===NULL || $result=="") {
 			// this is an invalid domain name
@@ -5817,9 +5817,9 @@ class RegisteredDomain {
 		if (isset($treeNode['!'])) {
 			return '#';
 		} else if (is_array($treeNode) && array_key_exists($sub, $treeNode)) {
-			$result = findRegisteredDomain($remainingSigningDomainParts, $treeNode[$sub]);
+			$result = $this->findRegisteredDomain($remainingSigningDomainParts, $treeNode[$sub]);
 		} else if (is_array($treeNode) && array_key_exists('*', $treeNode)) {
-			$result = findRegisteredDomain($remainingSigningDomainParts, $treeNode['*']);
+			$result = $this->findRegisteredDomain($remainingSigningDomainParts, $treeNode['*']);
 		} else {
 			return $sub;
 		}
@@ -5833,4 +5833,4 @@ class RegisteredDomain {
 		return NULL;
 	}
 
-?>
+}
